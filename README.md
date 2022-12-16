@@ -19,8 +19,6 @@ The chess is built on the top of [Rails](https://rubyonrails.org/) and [Hotwired
 - `cp .env.example .env`
 - `make build`
 - `make db-setup`
-- `make migrate`
-- `make seed`
 
 ## Start server in dev mode
 - `make dev && make debug`
