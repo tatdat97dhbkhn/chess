@@ -1,0 +1,8 @@
+{
+  "name": "chess",
+  "version": "1.0.0",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.1",
+    "chessboardjs": "0.0.1"
+  }
+}
