@@ -73,16 +73,48 @@ export default class extends BaseController {
     this.board.position(this.game.fen());
   }
 
+  isPromotion(fen, move) {
+    const chess = new Chess(fen);
+
+    const piece = chess.get(move.from);
+
+    if (piece?.type !== "p") {
+      return false;
+    }
+
+    if (piece.color !== chess.turn()) {
+      return false;
+    }
+
+    if (!["1", "8"].some((it) => move.to.endsWith(it))) {
+      return false;
+    }
+
+    return chess
+      .moves({ square: move.from, verbose: true })
+      .map((it) => it.to)
+      .includes(move.to);
+  }
+
   _onDrop(source, target) {
     const currentController = this;
     this.removeGreySquares();
+    let move;
 
-    // see if the move is legal
-    const move = this.game.move({
-      from: source,
-      to: target,
-      // promotion: "q", // NOTE: always promote to a queen for example simplicity
-    });
+    if (this.isPromotion(this.game.fen(), { from: source, to: target })) {
+      // see if the move is legal
+      move = this.game.move({
+        from: source,
+        to: target,
+        promotion: "q"
+      });
+    } else {
+      // see if the move is legal
+      move = this.game.move({
+        from: source,
+        to: target,
+      });
+    }
 
     // illegal move
     if (move === null) return "snapback";
